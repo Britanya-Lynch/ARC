@@ -1,6 +1,7 @@
 Click this link to visit the website: [https://britanya-lynch.github.io/ARC/](https://britanya-lynch.github.io/ARC/)
 
 To access through the login page:
+
 Username: user
 Password:: password
 
