@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h1, p {
+            text-align: center;
+            margin: 10px; /* Optional: Add some margin for better spacing */
+        }
+
+        .barber-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .barber-item {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            display: inline-block;
+            vertical-align: top;
+            cursor: pointer;
+        }
+
+        #filters {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #search-bar {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        #search-button {
+            padding: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to the ARC</h1>
+    <p>Please browse through the list of options given and select the particular service you desire.</p>
+
+    <div id="filters">
+        <input type="text" id="search-bar" placeholder="Search by name">
+        <button id="search-button" onclick="searchByName()">Search</button>
+        <label for="rating">Rating:</label>
+        <select id="rating">
+            <option value="">All</option>
+            <option value="5 stars">5 stars</option>
+            <option value="4 stars">4 stars</option>
+            <option value="3 stars">3 stars</option>
+            <option value="2 stars">2 stars</option>
+            <option value="1 star">1 star</option>
+        </select>
+
+        <label for="availability">Availability:</label>
+        <select id="availability">
+            <option value="">All</option>
+            <option value="available">Available</option>
+            <option value="not-available">Not Available</option>
+        </select>
+
+        <label for="specialization">Specialization:</label>
+        <select id="specialization">
+            <option value="">All</option>
+            <option value="haircut">Haircut</option>
+            <option value="beard-trim">Beard Trim</option>
+            <option value="coloring">Coloring</option>
+        </select>
+
+        <button onclick="filterBarbers()">Filter</button>
+    </div>
+
+    <ul class="barber-list" id="barberList">
+        <!-- Barber items will be dynamically added here -->
+    </ul>
+
+    <script>
+        // Sample data for barbers
+        const barbers = [
+            { name: "Barber 1", rating: 4, availability: "available", specialization: "haircut", portfolioLink: "portfolio1.html" },
+            { name: "Barber 2", rating: 5, availability: "not-available", specialization: "beard-trim", portfolioLink: "portfolio2.html" },
+            { name: "Barber 3", rating: 3, availability: "available", specialization: "coloring", portfolioLink: "portfolio3.html" },
+            // Add more barbers as needed
+        ];
+
+        // Function to filter and display barbers
+        function filterBarbers() {
+            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+            const ratingFilter = document.getElementById("rating").value;
+            const availabilityFilter = document.getElementById("availability").value;
+            const specializationFilter = document.getElementById("specialization").value;
+
+            const filteredBarbers = barbers.filter(barber => {
+                return (
+                    (searchQuery === '' || barber.name.toLowerCase().includes(searchQuery) || barber.specialization.toLowerCase().includes(searchQuery)) &&
+                    (ratingFilter === '' || barber.rating === parseInt(ratingFilter)) &&
+                    (availabilityFilter === '' || barber.availability === availabilityFilter) &&
+                    (specializationFilter === '' || barber.specialization === specializationFilter)
+                );
+            });
+
+            displayBarbers(filteredBarbers);
+        }
+
+        // Function to display barbers in the HTML
+        function displayBarbers(barbers) {
+            const barberList = document.getElementById("barberList");
+            barberList.innerHTML = '';
+
+            barbers.forEach(barber => {
+                const listItem = document.createElement("li");
+                listItem.className = "barber-item";
+                listItem.innerHTML = `
+                    <h3>${barber.name}</h3>
+                    <p>Rating: ${barber.rating}</p>
+                    <p>Availability: ${barber.availability}</p>
+                    <p>Specialization: ${barber.specialization}</p>
+                    <p><a href="${barber.portfolioLink}" target="_blank">View Portfolio</a></p>
+                `;
+                barberList.appendChild(listItem);
+            });
+        }
+
+        // Function to search barbers by name
+        function searchByName() {
+            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+            const filteredBarbers = barbers.filter(barber => {
+                return searchQuery === '' || barber.name.toLowerCase().includes(searchQuery);
+            });
+            displayBarbers(filteredBarbers);
+        }
+
+        // Initial display of all barbers
+        displayBarbers(barbers);
+    </script>
+
+</body>
+</html>
